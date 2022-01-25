@@ -22,6 +22,7 @@ import { filterGuesses, Guess } from "./guess"
         } else {
             break;
         }
+        console.log(JSON.stringify(words.slice(0, 10), null, 2))
         currentWord = words.shift()
     }
     if(response === 'ggggg') {

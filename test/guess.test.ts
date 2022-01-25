@@ -68,5 +68,36 @@ describe("guess", () => {
             guesses = guesses.filter(filterGuesses("bygby", { word: "clown", includes: [], score: 10 }))
             expect(guesses[0].word).toBe("knoll")
         })
+        /*
+        it is possible to get a 'b' for a letter that is in target word, if the letter has been marked
+        'g' or 'y' elsewhere and it is a repeat.
+
+        the exception is a 'y' in the same location 
+        */
+        it("should allow b for double letters", () => {
+            let guesses = [
+                { word: "later", includes: [], score: 10 },
+                { word: "solid", includes: [], score: 10 },
+                { word: "sonic", includes: [], score: 10 },
+                { word: "clown", includes: [], score: 10 },
+                { word: "dough", includes: [], score: 10 },
+                { word: "poppy", includes: [], score: 10 },
+                { word: "knoll", includes: [], score: 10 },
+                { word: "boozy", includes: [], score: 10 },
+                { word: "booxy", includes: [], score: 10 },
+            ]
+            guesses = guesses.filter(filterGuesses("bbbbb", { word: "later", includes: [], score: 10 }));
+            expect(guesses[0].word).toBe("sonic")
+            guesses = guesses.filter(filterGuesses("bgbbb", guesses[0]))
+            expect(guesses[0].word).toBe("dough")
+            guesses = guesses.filter(filterGuesses("bgbbb", guesses[0]))
+            expect(guesses[0].word).toBe("poppy")
+            guesses = guesses.filter(filterGuesses("bgbbg", guesses[0]))
+            expect(guesses[0].word).toBe("boozy")
+            guesses = guesses.filter(filterGuesses("ggbbg", guesses[0]))
+            expect(guesses[0].word).toBe("booxy")
+
+        })
+
     })
 })
